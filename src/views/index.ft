@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MySOI - Sina</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!-- Include the compiled Ratchet CSS -->
+    <link href="<?= Flight::get('flight.base_url') ?>res/static/css/ratchet.css" rel="stylesheet">
+    <link href="<?= Flight::get('flight.base_url') ?>res/static/css/ratchet-theme-android.css" rel="stylesheet">
+
+    <!-- Include the compiled Ratchet JS -->
+    <script src="<?= Flight::get('flight.base_url') ?>res/static/js/ratchet.js"></script>
+  </head>
+  <body>
+
+    <!-- Make sure all your bars are the first things in your <body> -->
+    <header class="bar bar-nav">
+	  <a class="icon icon-plus pull-right" data-ignore='push' href="<?= Flight::get('flight.base_url') ?>add" data-transition="slide-out"></a>
+      <h1 class="title">MySOI - Sina</h1>
+    </header>
+
+    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
+    <div class="content">
+      	<ul class="table-view">
+    	<?php $tot = 0;foreach ($data as $key => $value) { ?>
+			<li class="table-view-cell">
+				<a class="navigate-right" onClick="alert('<?= str_replace('\'', '', $value['description']); ?>')" >
+				  <button data-ignore='push' onClick="return confirm_delete('Are you sure to delete?','<?= $value['id']; ?>')" class="btn btn-negative"><span class="icon icon-trash"></span></button>
+				  <div class="badge" style="margin-right:50px;font-size:16px;padding:5px 10px">Rp. <?= $value['nominal']; ?></div>
+				  <?= $value['title']; ?><br>
+				  <span style="font-size:11px"><?= date('d F Y H:i',strtotime($value['created_date'])); ?></span>
+				</a>
+			</li>
+    	<?php  $tot= $tot+$value['nominal'];} ?>
+            <li class="table-view-cell">
+                <a class="navigate-right" >
+                  TOTAL : <div class="badge" style="margin-right:50px;font-size:16px;padding:5px 10px">Rp. <?= $tot; ?></div>
+                </a>
+            </li>
+		</ul>
+    </div>
+
+    <script type="text/javascript">
+	    function confirm_delete(question, id) {
+		  	if(confirm(question)){
+				window.location='<?= Flight::get('flight.base_url') ?>delete/'+id;
+		  	} else {
+		    	return false;  
+		  	}
+		}
+    </script>
+
+  </body>
+</html>
